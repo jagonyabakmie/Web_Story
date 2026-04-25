@@ -1,14 +1,13 @@
 // MedicalSection.tsx
-// "2370 total nakes Sulbar" + "DISTRIBUSI PER JENIS TENAGA" bar chart
 import { useEffect, useRef, useState } from "react";
 
 const nakesData = [
-  { label: "Dokter Umum", value: 380, color: "#2DD4BF" },
-  { label: "Dokter Spesialis", value: 120, color: "#34D399" },
-  { label: "Perawat", value: 980, color: "#60A5FA" },
-  { label: "Bidan", value: 620, color: "#F472B6" },
-  { label: "Apoteker", value: 150, color: "#A78BFA" },
-  { label: "Lainnya", value: 120, color: "#F59E0B" },
+  { label: "Dokter Umum", value: 380 },
+  { label: "Dokter Spesialis", value: 120 },
+  { label: "Perawat", value: 980 },
+  { label: "Bidan", value: 620 },
+  { label: "Apoteker", value: 150 },
+  { label: "Lainnya", value: 120 },
 ];
 
 const MAX_VAL = 980;
@@ -32,218 +31,317 @@ export default function MedicalSection() {
     transition: `opacity 0.7s ease ${delay}s, transform 0.7s ease ${delay}s`,
   });
 
+  // Chart lebih tinggi agar sejajar konten kanan
+  const CHART_H = 340;
+  const BAR_COLOR = "#3DBFA0";
+  const yTicks = [0, 200, 400, 600, 800, 1000];
+
   return (
     <section
       ref={ref}
       style={{
         position: "relative",
-        background: "#F5FFFE",
+        background: "#EEF9F7",
         padding: "clamp(3rem,8vh,6rem) clamp(1.5rem,7vw,8rem)",
         overflow: "hidden",
       }}
     >
-      {/* Ornamen bunga atas kanan */}
-      <img
-        src="/images/bunga2.png"
-        alt=""
-        aria-hidden="true"
-        style={{
-          position: "absolute",
-          top: "0.5rem",
-          right: "3%",
-          width: "clamp(60px,9vw,110px)",
-          pointerEvents: "none",
-          opacity: 0.7,
-          zIndex: 0,
-        }}
-      />
-
       {/* Section label */}
-      <div style={{ ...reveal(0.05), display: "flex", alignItems: "center", gap: "0.6rem", marginBottom: "1.5rem", position: "relative", zIndex: 2 }}>
-        <span style={{ display: "inline-block", width: 28, height: 2, background: "#0C2726", borderRadius: 2 }} />
+      <div style={{
+        ...reveal(0.05),
+        display: "flex",
+        alignItems: "center",
+        gap: "0.6rem",
+        marginBottom: "2rem",
+        position: "relative",
+        zIndex: 2,
+      }}>
+        <span style={{ display: "inline-block", width: 28, height: 2, background: "#1d9e75", borderRadius: 2 }} />
         <span style={{
           fontFamily: "'Plus Jakarta Sans', sans-serif",
           fontSize: "0.7rem",
           fontWeight: 700,
           letterSpacing: "0.2em",
           textTransform: "uppercase",
-          color: "#0C2726",
+          color: "#C9960F",
         }}>
-          Tenaga Kesehatan Sulbar
+          Tenaga Medis
         </span>
       </div>
 
-      {/* Grid: stat kiri + chart kanan */}
+      {/* Grid: Chart KIRI + Teks KANAN — alignItems stretch agar sama tinggi */}
       <div style={{
         display: "grid",
-        gridTemplateColumns: "1fr 1.4fr",
+        gridTemplateColumns: "1.25fr 1fr",
         gap: "clamp(2rem,5vw,4rem)",
-        alignItems: "start",
+        alignItems: "stretch",
         position: "relative",
         zIndex: 2,
       }}>
-        {/* LEFT — big number + narrative */}
-        <div>
-          <div style={reveal(0.1)}>
+
+        {/* ===== KIRI — Vertical Bar Chart ===== */}
+        <div style={{ ...reveal(0.1), display: "flex", flexDirection: "column" }}>
+          <div style={{
+            background: "#F5EFE0",
+            borderRadius: 18,
+            padding: "0 24px 24px",
+            border: "1px solid rgba(0,0,0,0.06)",
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            position: "relative",
+          }}>
+
+            {/* Bunga di tengah atas card */}
+            <div style={{
+              textAlign: "center",
+              marginTop: "-1px",
+              marginBottom: "0.5rem",
+              position: "relative",
+              zIndex: 3,
+            }}>
+              <img
+                src="/images/image3.png"
+                alt=""
+                aria-hidden="true"
+                style={{
+                  width: "clamp(60px, 8vw, 88px)",
+                  objectFit: "contain",
+                  display: "inline-block",
+                  marginTop: "-20px",
+                  filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.08))",
+                }}
+              />
+            </div>
+
+            {/* Chart title */}
+            <div style={{
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              fontSize: "0.72rem",
+              fontWeight: 800,
+              letterSpacing: "0.15em",
+              textTransform: "uppercase",
+              color: "#2C3E35",
+              marginBottom: "1.4rem",
+              textAlign: "center",
+            }}>
+              Distribusi Per Jenis Tenaga
+            </div>
+
+            {/* Bar chart wrapper — flex: 1 agar mengisi sisa ruang */}
+            <div style={{ display: "flex", alignItems: "stretch", gap: 0, flex: 1, minHeight: 0 }}>
+
+              {/* Y-axis ticks */}
+              <div style={{
+                display: "flex",
+                flexDirection: "column-reverse",
+                justifyContent: "space-between",
+                flex: 1,
+                maxWidth: 32,
+                marginRight: 8,
+                flexShrink: 0,
+                paddingBottom: 36, // ruang untuk x-label
+              }}>
+                {yTicks.map((tick) => (
+                  <span key={tick} style={{
+                    fontFamily: "'Plus Jakarta Sans', sans-serif",
+                    fontSize: "0.58rem",
+                    color: "#94a3b8",
+                    lineHeight: 1,
+                    display: "block",
+                    textAlign: "right",
+                  }}>
+                    {tick === 0 ? "0" : tick >= 1000 ? `${tick / 1000}K` : tick}
+                  </span>
+                ))}
+              </div>
+
+              {/* Bars + X labels */}
+              <div style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0 }}>
+                {/* Bar area */}
+                <div style={{ position: "relative", flex: 1, minHeight: 0 }}>
+                  {/* Grid lines */}
+                  {yTicks.map((tick) => (
+                    <div key={tick} style={{
+                      position: "absolute",
+                      left: 0,
+                      right: 0,
+                      bottom: `${(tick / MAX_VAL) * 100}%`,
+                      height: "1px",
+                      background: "rgba(0,0,0,0.08)",
+                      zIndex: 0,
+                    }} />
+                  ))}
+
+                  {/* Bars row */}
+                  <div style={{
+                    position: "absolute",
+                    inset: 0,
+                    display: "flex",
+                    alignItems: "flex-end",
+                    gap: "clamp(6px,2%,14px)",
+                    padding: "0 4px",
+                    zIndex: 1,
+                  }}>
+                    {nakesData.map((item, i) => (
+                      <div
+                        key={item.label}
+                        style={{
+                          flex: 1,
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                          height: "100%",
+                          justifyContent: "flex-end",
+                        }}
+                      >
+                        {/* Value on top of bar */}
+                        <span style={{
+                          fontFamily: "'Plus Jakarta Sans', sans-serif",
+                          fontSize: "clamp(0.48rem, 0.75vw, 0.62rem)",
+                          fontWeight: 700,
+                          color: "#2C7A60",
+                          marginBottom: 4,
+                          opacity: visible ? 1 : 0,
+                          transition: `opacity 0.5s ease ${0.5 + i * 0.07}s`,
+                          whiteSpace: "nowrap",
+                        }}>
+                          {item.value}
+                        </span>
+                        {/* Bar */}
+                        <div style={{
+                          width: "100%",
+                          background: BAR_COLOR,
+                          borderRadius: "8px 8px 4px 4px",
+                          height: visible ? `${(item.value / MAX_VAL) * 100}%` : "0%",
+                          transition: `height 0.9s cubic-bezier(0.34,1.56,0.64,1) ${0.3 + i * 0.08}s`,
+                        }} />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* X-axis labels */}
+                <div style={{
+                  display: "flex",
+                  gap: "clamp(6px,2%,14px)",
+                  padding: "8px 4px 0",
+                  height: 36,
+                  flexShrink: 0,
+                }}>
+                  {nakesData.map((item) => (
+                    <div key={item.label} style={{
+                      flex: 1,
+                      textAlign: "center",
+                      fontFamily: "'Plus Jakarta Sans', sans-serif",
+                      fontSize: "clamp(0.4rem, 0.62vw, 0.54rem)",
+                      fontWeight: 600,
+                      color: "#64748b",
+                      lineHeight: 1.25,
+                    }}>
+                      {item.label.split(" ").map((w, wi) => (
+                        <span key={wi} style={{ display: "block" }}>{w}</span>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ===== KANAN — Teks & Statistik ===== */}
+        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
+
+          {/* Big number + subtitle — rata tengah */}
+          <div style={{
+            ...reveal(0.12),
+            textAlign: "center",
+            marginBottom: "1.6rem",
+          }}>
             <div style={{
               fontFamily: "'Bricolage Grotesque', sans-serif",
-              fontWeight: 800,
-              fontSize: "clamp(3rem, 7vw, 6rem)",
-              color: "#0C2726",
+              fontWeight: 900,
+              fontSize: "clamp(4rem, 9vw, 7.5rem)",
+              color: "#C0392B",
               lineHeight: 1,
-              marginBottom: "0.2rem",
+              letterSpacing: "-2px",
             }}>
               2370
             </div>
             <div style={{
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              fontSize: "clamp(0.9rem, 1.5vw, 1.1rem)",
+              fontFamily: "'Lora', serif",
+              fontStyle: "italic",
               fontWeight: 700,
-              color: "#DB6058",
-              marginBottom: "1.5rem",
+              fontSize: "clamp(1.1rem, 2.2vw, 1.7rem)",
+              color: "#1a1a1a",
+              lineHeight: 1.3,
+              marginTop: "0.25rem",
             }}>
-              total nakes Sulbar
+              total nakes<br />Sulbar
             </div>
           </div>
 
-          <div style={reveal(0.2)}>
+          {/* Narrative text */}
+          <div style={reveal(0.22)}>
             <p style={{
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               fontSize: "clamp(0.82rem, 1.3vw, 0.95rem)",
-              color: "#475569",
-              lineHeight: 1.85,
-              margin: "0 0 1rem",
-            }}>
-              Sekitar puskesmas di setiap kabupaten hanya memiliki beberapa dokter dan sangat bergantung pada bidan yang yang dalam masa dinas. Kondisi ini jauh di bawah standar WHO.
-            </p>
-            <p style={{
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              fontSize: "clamp(0.82rem, 1.3vw, 0.95rem)",
-              color: "#475569",
+              color: "#1a3a32",
               lineHeight: 1.85,
               margin: 0,
             }}>
-              Di Sulbar yang geografis beragam, jumlah nakes tidak merata dan satu dokter harus melayani rata-rata dua kali lebih banyak penduduk dibanding rata-rata nasional.
+              Sedikit pun kekurangan nakes di daerah terpencil bisa berdampak besar pada kualitas dan kecepatan penanganan pasien. Rasio dokter terhadap penduduk di Sulbar masih jauh di bawah standar WHO.
             </p>
           </div>
 
-          {/* mhs2 ilustrasi */}
-          <div style={{ ...reveal(0.3), marginTop: "1.5rem" }}>
+          {/* Box paragraph — Rectangle 19 background */}
+          <div style={{
+            ...reveal(0.30),
+            position: "relative",
+            borderRadius: 12,
+            overflow: "hidden",
+            marginTop: "1.2rem",
+          }}>
             <img
-              src="/images/mhs2.png"
-              alt="Ilustrasi tenaga kesehatan"
+              src="/images/Rectangle 19.webp"
+              alt=""
+              aria-hidden="true"
               style={{
-                width: "clamp(100px,16vw,220px)",
-                objectFit: "contain",
-                filter: "drop-shadow(0 6px 16px rgba(0,0,0,0.1))",
+                position: "absolute",
+                inset: 0,
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                zIndex: 0,
               }}
             />
-          </div>
-        </div>
-
-        {/* RIGHT — bar chart "DISTRIBUSI PER JENIS TENAGA" */}
-        <div>
-          <div style={{
-            ...reveal(0.12),
-            fontFamily: "'Plus Jakarta Sans', sans-serif",
-            fontSize: "0.72rem",
-            fontWeight: 700,
-            letterSpacing: "0.15em",
-            textTransform: "uppercase",
-            color: "#64748b",
-            textAlign: "center",
-            marginBottom: "1.5rem",
-            padding: "0.6rem 1rem",
-            background: "rgba(0,0,0,0.03)",
-            borderRadius: 8,
-          }}>
-            Distribusi Per Jenis Tenaga
+            <p style={{
+              position: "relative",
+              zIndex: 1,
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              fontSize: "clamp(0.82rem, 1.3vw, 0.95rem)",
+              color: "#1a3a32",
+              lineHeight: 1.85,
+              margin: 0,
+              padding: "13px 16px",
+            }}>
+              Ketersediaan tenaga kesehatan sangat krusial. Puskesmas bergantung pada <strong>bidan</strong> yang sedang masa dinas, namun rasio dokter masih di bawah standar WHO.
+            </p>
           </div>
 
-          {/* Vertical bar chart */}
-          <div style={{
-            ...reveal(0.2),
-            display: "flex",
-            alignItems: "flex-end",
-            gap: "clamp(0.4rem,1.5vw,1rem)",
-            height: 200,
-            justifyContent: "center",
-            padding: "0 0.5rem",
-          }}>
-            {nakesData.map((item, i) => (
-              <div
-                key={item.label}
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  gap: "0.4rem",
-                  flex: 1,
-                }}
-              >
-                {/* Value label */}
-                <div style={{
-                  fontFamily: "'Bricolage Grotesque', sans-serif",
-                  fontWeight: 700,
-                  fontSize: "clamp(0.6rem, 1.1vw, 0.75rem)",
-                  color: item.color,
-                  opacity: visible ? 1 : 0,
-                  transition: `opacity 0.5s ease ${0.4 + i * 0.07}s`,
-                }}>
-                  {item.value}
-                </div>
-
-                {/* Bar */}
-                <div style={{
-                  width: "100%",
-                  background: "rgba(0,0,0,0.06)",
-                  borderRadius: "6px 6px 0 0",
-                  height: "160px",
-                  display: "flex",
-                  alignItems: "flex-end",
-                  overflow: "hidden",
-                }}>
-                  <div style={{
-                    width: "100%",
-                    background: item.color,
-                    borderRadius: "6px 6px 0 0",
-                    height: visible ? `${(item.value / MAX_VAL) * 100}%` : "0%",
-                    transition: `height 0.9s ease ${0.35 + i * 0.08}s`,
-                  }} />
-                </div>
-
-                {/* Label */}
-                <div style={{
-                  fontFamily: "'Plus Jakarta Sans', sans-serif",
-                  fontSize: "clamp(0.48rem, 0.8vw, 0.6rem)",
-                  fontWeight: 600,
-                  color: "#64748b",
-                  textAlign: "center",
-                  lineHeight: 1.2,
-                }}>
-                  {item.label.split(" ").map((w, wi) => (
-                    <span key={wi} style={{ display: "block" }}>{w}</span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Y-axis labels */}
-          <div style={{
-            display: "flex",
-            justifyContent: "space-between",
-            marginTop: "0.5rem",
-            paddingTop: "0.4rem",
-            borderTop: "1px solid rgba(0,0,0,0.08)",
-          }}>
-            {[0, 200, 400, 600, 800, 1000].map(v => (
-              <span key={v} style={{
-                fontFamily: "'Plus Jakarta Sans', sans-serif",
-                fontSize: "0.58rem",
-                color: "#94a3b8",
-              }}>{v}</span>
-            ))}
+          {/* Additional paragraph */}
+          <div style={reveal(0.38)}>
+            <p style={{
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              fontSize: "clamp(0.82rem, 1.3vw, 0.95rem)",
+              color: "#1a3a32",
+              lineHeight: 1.85,
+              marginTop: "1rem",
+              marginBottom: 0,
+            }}>
+              Satu dokter di Sulbar rata-rata harus melayani dua kali lebih banyak penduduk dibandingkan rata-rata nasional.
+            </p>
           </div>
         </div>
       </div>

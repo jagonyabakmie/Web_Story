@@ -3,15 +3,22 @@
 import { useEffect, useRef, useState } from "react";
 
 const kabData = [
-  { name: "Mamuju", faskes: 29, color: "#2DD4BF" },
-  { name: "Polewali Mandar", faskes: 26, color: "#34D399" },
-  { name: "Majene", faskes: 22, color: "#60A5FA" },
-  { name: "Mamuju Utara", faskes: 18, color: "#A78BFA" },
-  { name: "Mamasa", faskes: 15, color: "#F59E0B" },
-  { name: "Mamuju Tengah", faskes: 12, color: "#F87171" },
+  { name: "Majene", faskes: 13 },
+  { name: "Polewali Mandar", faskes: 24 },
+  { name: "Mamasa", faskes: 20 },
+  { name: "Mamuju", faskes: 29 },
+  { name: "Pasangkayu", faskes: 16 },
+  { name: "Mamuju Tengah", faskes: 12 },
 ];
 
-const MAX = 29;
+const MAX = Math.max(...kabData.map((d) => d.faskes));
+const MIN = Math.min(...kabData.map((d) => d.faskes));
+
+const barColor = (faskes: number) => {
+  if (faskes === MAX) return "#1d9e75";
+  if (faskes === MIN) return "#DB6058";
+  return "#5DCAA5";
+};
 
 export default function FacilitySection() {
   const ref = useRef<HTMLDivElement>(null);
@@ -20,7 +27,7 @@ export default function FacilitySection() {
   useEffect(() => {
     const obs = new IntersectionObserver(
       ([e]) => { if (e.isIntersecting) setVisible(true); },
-      { threshold: 0.12 }
+      { threshold: 0.1 }
     );
     if (ref.current) obs.observe(ref.current);
     return () => obs.disconnect();
@@ -37,59 +44,41 @@ export default function FacilitySection() {
       ref={ref}
       style={{
         position: "relative",
-        background: "#F5FFFE",
+        background: "#C5EDEA",
         padding: "clamp(3rem,8vh,6rem) clamp(1.5rem,7vw,8rem)",
         overflow: "hidden",
       }}
     >
-      {/* Ornamen kiri atas */}
-      <img
-        src="/images/ornamen5.png"
-        alt=""
-        aria-hidden="true"
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "clamp(80px,12vw,180px)",
-          pointerEvents: "none",
-          opacity: 0.6,
-          zIndex: 0,
-        }}
-      />
-
-      {/* Ornamen kanan atas bunga */}
-      <img
-        src="/images/bunga5.png"
-        alt=""
-        aria-hidden="true"
-        style={{
-          position: "absolute",
-          top: "1rem",
-          right: "3%",
-          width: "clamp(60px,9vw,120px)",
-          pointerEvents: "none",
-          opacity: 0.75,
-          zIndex: 0,
-        }}
-      />
-
-      {/* Section label */}
-      <div style={{ ...reveal(0.05), display: "flex", alignItems: "center", gap: "0.6rem", marginBottom: "1.5rem", position: "relative", zIndex: 2 }}>
-        <span style={{ display: "inline-block", width: 28, height: 2, background: "#0C2726", borderRadius: 2 }} />
+      {/* ── Section label ── */}
+      <div style={{
+        ...reveal(0.05),
+        display: "flex",
+        alignItems: "center",
+        gap: "0.6rem",
+        marginBottom: "1.5rem",
+        position: "relative",
+        zIndex: 2,
+      }}>
+        <span style={{
+          display: "inline-block",
+          width: 28,
+          height: 2,
+          background: "#1d9e75",
+          borderRadius: 2,
+        }} />
         <span style={{
           fontFamily: "'Plus Jakarta Sans', sans-serif",
           fontSize: "0.7rem",
           fontWeight: 700,
           letterSpacing: "0.2em",
           textTransform: "uppercase",
-          color: "#0C2726",
+          color: "#e3ba16",
         }}>
-          Akses Fasilitas Kesehatan
+          Fasilitas Kesehatan
         </span>
       </div>
 
-      {/* Grid: text kiri + chart kanan */}
+      {/* ── Main grid: text left + chart right ── */}
       <div style={{
         display: "grid",
         gridTemplateColumns: "1fr 1fr",
@@ -98,184 +87,227 @@ export default function FacilitySection() {
         position: "relative",
         zIndex: 2,
       }}>
-        {/* LEFT — headline + narrative */}
+
+        {/* ── LEFT: headline + paragraphs ── */}
         <div>
           <div style={reveal(0.12)}>
             <h2 style={{
               fontFamily: "'Bricolage Grotesque', sans-serif",
               fontWeight: 800,
               fontSize: "clamp(1.8rem, 3.6vw, 3rem)",
-              color: "#0C2726",
+              color: "#DB6058",
               margin: "0 0 1rem",
               lineHeight: 1.15,
             }}>
-              Jumlah Fasilitas{" "}
+              <div>Jumlah Fasilitas</div> {/* Membungkus dengan div agar pindah baris */}
               <span style={{
                 fontFamily: "'Lora', serif",
-                fontStyle: "italic",
-                color: "#DB6058",
+                fontStyle: "italic", // Catatan: "bold italic" bukan standar CSS, pakai "italic" saja karena h2 sudah bold
+                color: "#000000",
+                display: "block",    // Menambah display block agar pasti turun ke bawah
+                marginTop: "0.2rem"  // Memberi sedikit jarak antar baris jika perlu
               }}>
                 Per Kabupaten
               </span>
             </h2>
           </div>
+          {/* Box paragraph — berlatar Rectangle19.webp */}
+          <div style={{
+            ...reveal(0.18),
+            position: "relative",
+            borderRadius: 12,
+            overflow: "hidden",
+            marginBottom: "1rem",
+          }}>
+            {/* Rectangle19 sebagai background */}
+            <img
+              src="/images/Rectangle 19.webp"
+              alt=""
+              aria-hidden="true"
+              style={{
+                position: "absolute",
+                inset: 0,
+                width: "100%",
+                height: "150%",
+                objectFit: "cover",
+                pointerEvents: "none",
+                userSelect: "none",
+                zIndex: 0,
+              }}
+            />
+            <p style={{
+              position: "relative",
+              zIndex: 1,
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              fontSize: "clamp(0.82rem, 1.3vw, 0.95rem)",
+              color: "#1a3a32",
+              lineHeight: 1.85,
+              margin: 0,
+              padding: "13px 16px",
+            }}>
+              Mencakup rumah sakit, puskesmas, klinik, dan posyandu per
+              kabupaten. Puskesmas berfungsi sebagai ujung tombak layanan
+              tingkat pertama yang mengutamakan upaya{" "}
+              <strong style={{ fontWeight: 700 }}>promotif</strong> dan{" "}
+              <strong style={{ fontWeight: 700 }}>preventif</strong>.
+            </p>
+          </div>
 
-          <div style={reveal(0.2)}>
+          <div style={reveal(0.24)}>
             <p style={{
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               fontSize: "clamp(0.82rem, 1.3vw, 0.95rem)",
-              color: "#475569",
+              color: "#1a3a32",
               lineHeight: 1.85,
-              margin: "0 0 1rem",
+              margin: "0 0 0.75rem",
             }}>
-              Mencakup rumah sakit, puskesmas, klinik, dan posyandu per kabupaten. Puskesmas berfungsi sebagai ujung tombak layanan tingkat pertama yang menghubungkan populasi ke masyarakat untuk mempromosikan kesehatan.
+              <strong style={{ fontWeight: 700 }}>Posyandu</strong> hadir
+              sebagai layanan berbasis masyarakat untuk mempercepat penurunan
+              angka kematian ibu dan bayi.
             </p>
             <p style={{
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               fontSize: "clamp(0.82rem, 1.3vw, 0.95rem)",
-              color: "#475569",
+              color: "#1a3a32",
               lineHeight: 1.85,
               margin: 0,
             }}>
-              Di Sulbar yang geografinya beragam dan luas, jumlah fasilitas rata-rata adalah tidak cukup untuk melayani masyarakat yang tersebar dan terpinggirkan hidup jauh dan terpencil.
+              Di Sulbar yang geografinya berbukit, jumlah fasilitas saja tidak
+              cukup — jaraknya pun menentukan apakah warga benar-benar bisa
+              mengaksesnya.
             </p>
-          </div>
-
-          {/* Highlight card */}
-          <div style={{
-            ...reveal(0.3),
-            background: "#C5EDEA",
-            borderRadius: 14,
-            padding: "1rem 1.4rem",
-            marginTop: "1.5rem",
-            display: "flex",
-            gap: "1.5rem",
-            alignItems: "center",
-          }}>
-            <div>
-              <div style={{
-                fontFamily: "'Plus Jakarta Sans', sans-serif",
-                fontSize: "0.6rem",
-                fontWeight: 700,
-                letterSpacing: "0.15em",
-                textTransform: "uppercase",
-                color: "#0C2726",
-                marginBottom: "0.2rem",
-              }}>Faskes Terbanyak</div>
-              <div style={{
-                fontFamily: "'Bricolage Grotesque', sans-serif",
-                fontWeight: 800,
-                fontSize: "1.6rem",
-                color: "#0C2726",
-                lineHeight: 1,
-              }}>29 unit</div>
-              <div style={{
-                fontFamily: "'Plus Jakarta Sans', sans-serif",
-                fontSize: "0.65rem",
-                color: "#334155",
-                marginTop: "0.2rem",
-              }}>Kabupaten Mamuju</div>
-            </div>
-            <div style={{ width: 1, height: 48, background: "rgba(12,39,38,0.2)" }} />
-            <div>
-              <div style={{
-                fontFamily: "'Plus Jakarta Sans', sans-serif",
-                fontSize: "0.6rem",
-                fontWeight: 700,
-                letterSpacing: "0.15em",
-                textTransform: "uppercase",
-                color: "#DB6058",
-                marginBottom: "0.2rem",
-              }}>Faskes Tersedikit</div>
-              <div style={{
-                fontFamily: "'Bricolage Grotesque', sans-serif",
-                fontWeight: 800,
-                fontSize: "1.6rem",
-                color: "#DB6058",
-                lineHeight: 1,
-              }}>12 unit</div>
-              <div style={{
-                fontFamily: "'Plus Jakarta Sans', sans-serif",
-                fontSize: "0.65rem",
-                color: "#334155",
-                marginTop: "0.2rem",
-              }}>Mamuju Tengah</div>
-            </div>
           </div>
         </div>
 
-        {/* RIGHT — horizontal bar chart */}
+        {/* ── RIGHT: bar chart card ── */}
         <div style={reveal(0.2)}>
+
+          {/* Chart card */}
           <div style={{
-            fontFamily: "'Plus Jakarta Sans', sans-serif",
-            fontSize: "0.7rem",
-            fontWeight: 700,
-            letterSpacing: "0.15em",
-            textTransform: "uppercase",
-            color: "#64748b",
-            marginBottom: "1.2rem",
+            background: "#e8f5ec",
+            borderRadius: 18,
+            padding: "20px 20px 18px",
+            border: "1.5px solid rgba(255,255,255,0.7)",
+            position: "relative",
           }}>
-            Distribusi Fasilitas Kesehatan per Kabupaten
-          </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "0.9rem" }}>
-            {kabData.map((kab, i) => (
-              <div key={kab.name} style={{ ...reveal(0.25 + i * 0.06) }}>
-                <div style={{
+
+            {/* Bunga2 menempel di atas judul chart */}
+            <div style={{
+              display: "flex",
+              justifyContent: "center",
+              marginBottom: "4px",
+            }}>
+              <img
+                src="/images/bunga3.png"
+                alt=""
+                aria-hidden="true"
+                style={{
+                  width: "clamp(100px, 11vw, 110px)",
+                  height: "auto",
+                  objectFit: "contain",
+                  pointerEvents: "none",
+                  userSelect: "none",
+                  display: "block",
+                }}
+              />
+            </div>
+
+            <div style={{
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              fontSize: "0.68rem",
+              fontWeight: 700,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+              color: "#0C2726",
+              marginBottom: "4px",
+              textAlign: "center",
+            }}>
+              Distribusi Fasilitas Kesehatan per Kabupaten
+            </div>
+
+            {/* Legend */}
+            <div style={{
+              display: "flex",
+              justifyContent: "center",
+              flexWrap: "wrap",
+              gap: "5px 12px",
+              marginBottom: "1.2rem",
+              marginTop: "6px",
+            }}>
+              {[
+                { color: "#1d9e75", label: "Terbanyak (Mamuju)" },
+                { color: "#5DCAA5", label: "Kabupaten lain" },
+                { color: "#DB6058", label: "Tersedikit (Mamuju Tengah)" },
+              ].map(({ color, label }) => (
+                <span key={label} style={{
                   display: "flex",
-                  justifyContent: "space-between",
-                  marginBottom: "0.3rem",
+                  alignItems: "center",
+                  gap: 5,
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  fontSize: 10,
+                  color: "#1a3a32",
                 }}>
                   <span style={{
-                    fontFamily: "'Plus Jakarta Sans', sans-serif",
-                    fontSize: "0.78rem",
-                    fontWeight: 600,
-                    color: "#334155",
-                  }}>
-                    {kab.name}
-                  </span>
-                  <span style={{
-                    fontFamily: "'Bricolage Grotesque', sans-serif",
-                    fontWeight: 700,
-                    fontSize: "0.85rem",
-                    color: kab.color,
-                  }}>
-                    {kab.faskes} unit
-                  </span>
-                </div>
-                <div style={{
-                  height: 10,
-                  background: "rgba(0,0,0,0.06)",
-                  borderRadius: 8,
-                  overflow: "hidden",
+                    width: 10, height: 10,
+                    borderRadius: 2,
+                    background: color,
+                    flexShrink: 0,
+                  }} />
+                  {label}
+                </span>
+              ))}
+            </div>
+
+            {/* Horizontal bars */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}>
+              {kabData.map((kab, i) => (
+                <div key={kab.name} style={{
+                  opacity: visible ? 1 : 0,
+                  transform: visible ? "translateY(0)" : "translateY(20px)",
+                  transition: `opacity 0.6s ease ${0.28 + i * 0.07}s, transform 0.6s ease ${0.28 + i * 0.07}s`,
                 }}>
                   <div style={{
-                    height: "100%",
-                    width: visible ? `${(kab.faskes / MAX) * 100}%` : "0%",
-                    background: kab.color,
+                    display: "flex",
+                    justifyContent: "space-between",
+                    marginBottom: "0.28rem",
+                  }}>
+                    <span style={{
+                      fontFamily: "'Plus Jakarta Sans', sans-serif",
+                      fontSize: "0.78rem",
+                      fontWeight: 600,
+                      color: "#334155",
+                    }}>
+                      {kab.name}
+                    </span>
+                    <span style={{
+                      fontFamily: "'Bricolage Grotesque', sans-serif",
+                      fontWeight: 700,
+                      fontSize: "0.85rem",
+                      color: barColor(kab.faskes),
+                    }}>
+                      {kab.faskes} unit
+                    </span>
+                  </div>
+                  <div style={{
+                    height: 10,
+                    background: "rgba(0,0,0,0.08)",
                     borderRadius: 8,
-                    transition: `width 1s ease ${0.3 + i * 0.08}s`,
-                  }} />
+                    overflow: "hidden",
+                  }}>
+                    <div style={{
+                      height: "100%",
+                      width: visible ? `${(kab.faskes / MAX) * 100}%` : "0%",
+                      background: barColor(kab.faskes),
+                      borderRadius: 8,
+                      transition: `width 1s ease ${0.35 + i * 0.08}s`,
+                    }} />
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </div>
-
-      {/* Ornamen bunga bawah kiri */}
-      <img
-        src="/images/bunga6.png"
-        alt=""
-        aria-hidden="true"
-        style={{
-          position: "absolute",
-          bottom: "0.5rem",
-          left: "2%",
-          width: "clamp(50px,8vw,100px)",
-          pointerEvents: "none",
-          opacity: 0.7,
-        }}
-      />
     </section>
   );
 }

@@ -15,7 +15,8 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Plus Jakarta Sans', sans-serif;
-  background: #F5FFFE;
+  background: radial-gradient(ellipse at top left, #B8FFE7 0%, #F5FFFE 60%);
+  background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -39,11 +40,11 @@ p {
   background: #F5FFFE;
 }
 ::-webkit-scrollbar-thumb {
-  background: #C5EDEA;
+  background: #B8FFE7;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #8DD5CF;
+  background: #7de8c0;
 }
 
 /* ── Section divider line ── */

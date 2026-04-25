@@ -27,7 +27,7 @@ export default function FooterSection() {
       <div
         style={{
           position: "relative",
-          background: "#C5EDEA",
+          background: "radial-gradient(ellipse at top left, #B8FFE7 0%, #F5FFFE 55%)",
           padding: "clamp(4rem,10vh,8rem) clamp(1.5rem,7vw,8rem)",
           overflow: "hidden",
           minHeight: "60vh",
