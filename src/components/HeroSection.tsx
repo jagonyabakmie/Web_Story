@@ -25,7 +25,7 @@ export default function HeroSection() {
         position: "relative",
         width: "100%",
         minHeight: "100vh",
-        background: "radial-gradient(ellipse at top right, #B8FFE7 0%, #F5FFFE 65%)",
+        background: "linear-gradient(180deg, #B8FFE7 0%, #d6fff1 100%)",
         overflow: "hidden",
         display: "flex",
         flexDirection: "column",
@@ -48,10 +48,11 @@ export default function HeroSection() {
         }}
       />
 
-      {/* ── People illustration — anchored bottom-right ── */}
+      {/* ── People illustration ── */}
       <img
         src="/images/people.webp"
         alt="Ilustrasi berbagai generasi"
+        className="float-anim-slow"
         style={{
           position: "absolute",
           right: "0%",

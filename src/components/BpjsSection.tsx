@@ -57,7 +57,7 @@ function DonutChart({
   setHovered: (i: number | null) => void;
 }) {
   const slices = buildSlices();
-  const cx = 450, cy = 450, r = 425, ir = 310;
+  const cx = 200, cy = 200, r = 210, ir = 100;
 
   return (
     <svg
@@ -97,7 +97,7 @@ function DonutChart({
               x={lp.x}
               y={lp.y + 6}
               textAnchor="middle"
-              fontSize={isHov ? 36 : 29}
+              fontSize={isHov ? 20 : 15}
               fill="white"
               fontFamily="'Bricolage Grotesque', sans-serif"
               fontWeight={800}
@@ -146,7 +146,7 @@ function DonutChart({
           </text>
           <text
             x={cx} y={cy + 22}
-            textAnchor="middle" fontSize={50} fill="#0C2726"
+            textAnchor="middle" fontSize={30} fill="#0C2726"
             fontFamily="'Bricolage Grotesque', sans-serif" fontWeight={800}
             style={{ pointerEvents: "none" }}
           >
@@ -190,7 +190,7 @@ export default function BpjsSection() {
         style={{
           position: "relative",
           width: "100%",
-          minHeight: "100vh",
+          height: "128vh",
           background: "linear-gradient(150deg, #cff4ef 0%, #b6ede7 45%, #9adfd8 100%)",
           overflow: "hidden",
           boxSizing: "border-box",
@@ -212,10 +212,10 @@ export default function BpjsSection() {
         <div style={{
           position: "absolute",
           top: "clamp(5rem,10vh,8rem)",
-          right: "clamp(20rem,4vw,4rem)",
+          right: "clamp(10rem,2vw,2rem)",
           zIndex: 4,
-          width: "clamp(200px,35vw,280px)",
-          height: "clamp(200px,35vw,280px)",
+          width: "clamp(50px,10vw,240px)",
+          height: "clamp(50px,10vw,240px)",
           borderRadius: "50%",
           background: "radial-gradient(circle at 40% 35%, #ffffff 0%, #d6f4f0 55%, #a8e2dc 100%)",
           boxShadow: "0 6px 28px rgba(43,167,167,0.22), 0 2px 6px rgba(0,0,0,0.07)",
@@ -236,7 +236,7 @@ export default function BpjsSection() {
             position: "absolute",
             bottom: 0,
             right: "clamp(-1rem,1vw,1.5rem)",
-            height: "clamp(500px,85vh,900px)",
+            height: "clamp(300px,60vh,700px)",
             objectFit: "contain",
             pointerEvents: "none",
             zIndex: 3,
@@ -295,7 +295,7 @@ export default function BpjsSection() {
               background: "#F1BD1E", borderRadius: 2,
             }} />
             <span style={{
-              fontSize: "clamp(1.3rem,1.9vw,1.5rem)",
+              fontSize: "clamp(0.9rem,1.5vw,1rem)",
               fontWeight: 700, letterSpacing: "0.22em",
               textTransform: "uppercase" as const, color: "#F1BD1E",
             }}>
@@ -308,7 +308,7 @@ export default function BpjsSection() {
             <h2 style={{
               fontFamily: "'Bricolage Grotesque', sans-serif",
               fontWeight: 800,
-              fontSize: "clamp(3rem,5vw,4.4rem)",
+              fontSize: "clamp(2rem,3vw,2.4rem)",
               color: "#D0312D",
               margin: "0 0 clamp(0.7rem,1.4vh,1.1rem)",
               lineHeight: 1.1,
@@ -322,11 +322,11 @@ export default function BpjsSection() {
           {/* Description */}
           <div style={reveal(0.17)}>
             <p style={{
-              fontSize: "clamp(1.8rem,2.3vw,2rem)",
+              fontSize: "clamp(0.8rem,1.3vw,1rem)",
               color: "#1f4a47",
               lineHeight: 1.8,
               margin: 0,
-              maxWidth: 850,
+              maxWidth: 450,
             }}>
               Tanpa BPJS, banyak orang memilih menunda berobat karena biaya — dan itulah
               yang perlahan menggerus harapan hidup. Penelitian menunjukkan bahwa JKN
@@ -351,21 +351,22 @@ export default function BpjsSection() {
           {/* LEFT — chart title + legend */}
           <div style={{
             flex: "0 0 auto",
-            width: "clamp(500px,50vw,700px)",
+            width: "clamp(300px,20vw,500px)",
             display: "flex",
             flexDirection: "column",
-            gap: "clamp(14px,2vh,22px)",
-            marginLeft: "100px",
+            gap: "clamp(6px,1vh,10px)",
+            marginLeft: "20px",
           }}>
             {/* chart section title */}
             <div style={{
               fontFamily: "'Bricolage Grotesque', sans-serif",
-              fontSize: "clamp(2rem,2.2vw,2.05rem)",
+              fontSize: "clamp(1rem,1.2vw,1.05rem)",
               fontWeight: 700,
               color: "#0C2726",
               paddingLeft: 12,
               borderLeft: "5px solid #E8834A",
               lineHeight: 1.5,
+              marginTop: "-300px",
             }}>
               Persentase Penduduk Sulawesi Barat yang Memiliki Jaminan Kesehatan
             </div>
@@ -395,14 +396,14 @@ export default function BpjsSection() {
                   }} />
                   <div>
                     <div style={{
-                      fontSize: "clamp(27px,4vw,20px)",
+                      fontSize: "clamp(5px,1vw,12px)",
                       color: "#1f4a47", lineHeight: 1.5,
                     }}>
                       {d.label}
                     </div>
                     <div style={{
                       fontFamily: "'Bricolage Grotesque', sans-serif",
-                      fontSize: "clamp(70px,7vw,50px)",
+                      fontSize: "clamp(15px,1vw,22px)",
                       fontWeight: 800, color: d.color, marginTop: 2,
                       transform: hovered === i ? "scale(1.05)" : "scale(1)",
                       transformOrigin: "left center",
@@ -420,9 +421,10 @@ export default function BpjsSection() {
           <div style={{
             flex: "1 1 auto",
             display: "flex",
-            justifyContent: "center",
-            paddingRight: "400px",
-            transform: "translateY(-200px)", 
+            justifyContent: "right",
+            alignItems: "right",
+            transform: "translateY(-500px)",
+            transform: "translateX(80px)",
           }}>
             <DonutChart hovered={hovered} setHovered={setHovered} />
           </div>

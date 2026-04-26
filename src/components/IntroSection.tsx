@@ -7,10 +7,8 @@ export default function IntroSection() {
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setVisible(true);
-      },
-      { threshold: 0.08 },
+      ([entry]) => { setVisible(entry.isIntersecting); },
+      { threshold: 0.06 },
     );
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
@@ -27,7 +25,7 @@ export default function IntroSection() {
       ref={ref}
       style={{
         position: "relative",
-        background: "#C5EDEA",
+        background: "linear-gradient(180deg, #c5edea 0%, #d5f2ef 100%)",
         overflow: "hidden",
         padding:
           "clamp(3rem,7vh,5rem) clamp(1.5rem,6vw,7rem) clamp(6rem,12vh,10rem)",

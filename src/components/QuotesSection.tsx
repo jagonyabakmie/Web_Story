@@ -7,10 +7,8 @@ export default function QuotesSection() {
 
   useEffect(() => {
     const obs = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting) setVisible(true);
-      },
-      { threshold: 0.2 },
+      ([e]) => { setVisible(e.isIntersecting); },
+      { threshold: 0.15 },
     );
     if (ref.current) obs.observe(ref.current);
     return () => obs.disconnect();
@@ -21,7 +19,7 @@ export default function QuotesSection() {
       ref={ref}
       style={{
         position: "relative",
-        background: "#C5EDEA",
+        background: "linear-gradient(180deg, #c5edea 0%, #d8f5f2 100%)",
         padding: "clamp(3.5rem,9vh,7rem) clamp(1.5rem,7vw,8rem)",
         overflow: "hidden",
         display: "flex",
@@ -35,6 +33,7 @@ export default function QuotesSection() {
         src="/images/ornamen9.png"
         alt=""
         aria-hidden="true"
+        className="float-anim-slow"
         style={{
           position: "absolute",
           top: "50%",
@@ -51,6 +50,7 @@ export default function QuotesSection() {
         src="/images/ornamen8.png"
         alt=""
         aria-hidden="true"
+        className="float-anim"
         style={{
           position: "absolute",
           top: "53%",
@@ -67,6 +67,7 @@ export default function QuotesSection() {
         src="/images/bunga4.png"
         alt=""
         aria-hidden="true"
+        className="float-spin"
         style={{
           position: "absolute",
           top: "70px",

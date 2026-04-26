@@ -18,8 +18,8 @@ export default function MedicalSection() {
 
   useEffect(() => {
     const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) setVisible(true); },
-      { threshold: 0.12 }
+      ([e]) => { setVisible(e.isIntersecting); },
+      { threshold: 0.08 }
     );
     if (ref.current) obs.observe(ref.current);
     return () => obs.disconnect();
@@ -41,7 +41,7 @@ export default function MedicalSection() {
       ref={ref}
       style={{
         position: "relative",
-        background: "#EEF9F7",
+        background: "linear-gradient(180deg, #EEF9F7 0%, #f5fcfb 100%)",
         padding: "clamp(3rem,8vh,6rem) clamp(1.5rem,7vw,8rem)",
         overflow: "hidden",
       }}

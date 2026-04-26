@@ -26,8 +26,8 @@ export default function FacilitySection() {
 
   useEffect(() => {
     const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) setVisible(true); },
-      { threshold: 0.1 }
+      ([e]) => { setVisible(e.isIntersecting); },
+      { threshold: 0.08 }
     );
     if (ref.current) obs.observe(ref.current);
     return () => obs.disconnect();
@@ -44,7 +44,7 @@ export default function FacilitySection() {
       ref={ref}
       style={{
         position: "relative",
-        background: "#C5EDEA",
+        background: "linear-gradient(180deg, #e0f9f5 0%, #edfcfa 100%)",
         padding: "clamp(3rem,8vh,6rem) clamp(1.5rem,7vw,8rem)",
         overflow: "hidden",
       }}

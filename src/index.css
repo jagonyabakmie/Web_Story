@@ -15,7 +15,8 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Plus Jakarta Sans', sans-serif;
-  background: radial-gradient(ellipse at top left, #B8FFE7 0%, #F5FFFE 60%);
+  /* Gradient satu arah dari atas ke bawah: B8FFE7 → F5FFFE */
+  background: linear-gradient(180deg, #B8FFE7 0%, #F5FFFE 100%);
   background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -54,4 +55,54 @@ p {
   height: 2px;
   background: #0C2726;
   border-radius: 2px;
+}
+
+/* ── Scroll reveal animations ── */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal-on-scroll.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Float animation untuk images/webp ── */
+@keyframes floatY {
+  0%   { transform: translateY(0px); }
+  50%  { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+@keyframes floatX {
+  0%   { transform: translateX(0px) rotate(0deg); }
+  50%  { transform: translateX(6px) rotate(2deg); }
+  100% { transform: translateX(0px) rotate(0deg); }
+}
+@keyframes floatSpin {
+  0%   { transform: translateY(0) rotate(0deg); }
+  50%  { transform: translateY(-8px) rotate(4deg); }
+  100% { transform: translateY(0) rotate(0deg); }
+}
+
+.float-anim {
+  animation: floatY 4s ease-in-out infinite;
+}
+.float-anim-slow {
+  animation: floatY 6s ease-in-out infinite;
+}
+.float-anim-x {
+  animation: floatX 5s ease-in-out infinite;
+}
+.float-spin {
+  animation: floatSpin 5s ease-in-out infinite;
+}
+
+/* ── Map section fade transition ── */
+@keyframes fadeInFromBottom {
+  from { opacity: 0; transform: scale(1.04) translateY(24px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+.map-section-enter {
+  animation: fadeInFromBottom 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }

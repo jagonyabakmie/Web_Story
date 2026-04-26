@@ -453,6 +453,7 @@ export default function ScrollySection() {
   const [direction, setDirection] = useState(1);
   const [visible, setVisible] = useState(false);
   const [uiVisible, setUiVisible] = useState(false);
+  const [fadeOpacity, setFadeOpacity] = useState(0);
 
   useEffect(() => {
     injectPopupStyles();
@@ -798,6 +799,11 @@ export default function ScrollySection() {
       const inView = rect.top < vh * 0.7 && rect.bottom > vh * 0.3;
       setVisible(inView);
 
+      // Fade overlay: semakin dekat ke view, semakin terang, lalu menghilang
+      const enterProgress = Math.max(0, Math.min(1, (vh - rect.top) / (vh * 0.6)));
+      const fadeVal = rect.top > vh ? 0 : rect.top > 0 ? 1 - enterProgress : 0;
+      setFadeOpacity(fadeVal);
+
       if (rect.top > vh * 0.4) {
         if (hasZoomedIn.current && !isResetting.current) resetToGlobe();
         return;
@@ -856,6 +862,19 @@ export default function ScrollySection() {
 
   return (
     <>
+      {/* Fade overlay — efek memudar saat masuk section peta */}
+      <div
+        style={{
+          position: "fixed",
+          inset: 0,
+          background: "radial-gradient(ellipse at center, #B8FFE7 0%, #0C2726 100%)",
+          opacity: fadeOpacity,
+          pointerEvents: "none",
+          zIndex: 45,
+          transition: "opacity 0.3s ease",
+        }}
+        aria-hidden="true"
+      />
       <ScrollHint visible={visible && globeMode && !heroScrolling} />
 
       {uiVisible && visible && !globeMode && (
